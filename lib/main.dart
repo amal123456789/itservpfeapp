@@ -16,14 +16,17 @@ import 'package:itservpfeapp/migration/migration.dart';
 import 'package:itservpfeapp/pages/dashboard.dart';
 import 'package:itservpfeapp/property/drawer.dart';
 import 'package:itservpfeapp/propertyElastic/propertyElasticDrawer.dart';
+import 'package:itservpfeapp/responsive.dart';
 import 'package:itservpfeapp/sourcePropElastic/sourcePropElasticDrawer.dart';
 import 'package:itservpfeapp/sourceprop/drawer.dart';
 import 'package:itservpfeapp/tabview.dart';
 import 'package:itservpfeapp/tesd/drawerDatasource.dart';
 import 'package:itservpfeapp/testing/DataTableDemo.dart';
 import 'package:itservpfeapp/testing/employeeDrawer.dart';
+import 'package:provider/provider.dart';
 import 'package:url_strategy/url_strategy.dart';
 
+import 'MenuController.dart';
 import 'datadestinationsql/drawer.dart';
 import 'logssql/getall.dart';
 
@@ -44,7 +47,16 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/home',
       getPages: [
-      GetPage(name: '/:page_name', page: () => MasterPage()),
+      GetPage(name: '/:page_name', page: () => 
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => MenuController(),
+          ),
+        ],
+        child: MasterPage(),),
+        ),
+      //MasterPage()),
     ],
        
       //home: Home(),
@@ -170,231 +182,21 @@ class MasterPage extends StatelessWidget{
     // TODO: implement build
     
     return Scaffold(
+      key: context.read<MenuController>().scaffoldKey ,
+      drawer: SideBar(),
       body: SafeArea(
         child: Row(
             children: [
               ////////////////////test test test tst test video
+              // We want this side menu only for large screen
+            if (Responsive.isDesktop(context))
               Expanded(
               child: SideBar(),
               ),
-             /* Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-          color: Colors.blue,
-         borderRadius: BorderRadius.circular(20.0),
-        ),
-                  //color: Colors.blue,
-                  child: Column(
-                    
-                    children: [
-                      Container(
-                        width: double.maxFinite ,
-                        
-                        child: DrawerHeader(
-                          child: CircleAvatar(
-                            child: Icon(
-                              CupertinoIcons.profile_circled,
-                              size: 60,
-                            ),
-                          ),),
-                      ),
-                      ExpansionTile(
-                        title: Text("SQL Management"),
-                        //backgroundColor: Colors.amber.shade100,
-                        trailing: Icon(Icons.menu_open),
-                      
-
-                        children: [
-                           ListTile(
-                          hoverColor: Colors.black12 ,
-                          leading: Icon(Icons.menu),
-                          title: Text("Data source"),
-                          
-                          
-                          onTap: (){
-                            Get.toNamed("/datasource");
-                          },
-                          
-                        ),
-                      
-                      SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("Data Destination"),
-                        onTap: (){
-                          Get.toNamed("/datadestination");
-                        },
-                      
-                      ),
-                      SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("Property Management"),
-                        onTap: (){
-                          Get.toNamed("/property");
-                        },
-                      
-                      ),SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("Source Property Management"),
-                        onTap: (){
-                          Get.toNamed("/sourceprop");
-                        },
-                      
-                      ),SizedBox(height: 2,),
-                      /*ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("Employee Management"),
-                        onTap: (){
-                          Get.toNamed("/employee");
-                        },
-                      
-                      ),SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("5ra"),
-                        onTap: (){
-                          Get.toNamed("/5raaaaaa");
-                        },
-                      
-                      ),
-                      SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("tabbar"),
-                        onTap: (){
-                          Get.toNamed("/tabbar");
-                        },
-                      
-                      ),*/
-                      
-
-                      ],
-                      ),
-                      ExpansionTile(
-                        title: Text("Elasticsearch Management"),
-                        //backgroundColor: Colors.amber.shade100,
-                        trailing: Icon(Icons.menu_book_outlined),
-                      
-
-                        children: [
-                           ListTile(
-                          hoverColor: Colors.black12 ,
-                          leading: Icon(CupertinoIcons.doc_append),
-                          title: Text("Data source "),
-                          
-                          
-                          onTap: (){
-                            Get.toNamed("/elasticdatasource");
-                          },
-                          
-                        ),
-                      
-                      SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.doc_append),
-                        title: Text("Data Destination Management"),
-                        onTap: (){
-                          Get.toNamed("/elasticdatadestination");
-                        },
-                      
-                      ),
-                      SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.doc_append),
-                        title: Text("Properties Management"),
-                        onTap: (){
-                          Get.toNamed("/propertyElastic");
-                        },
-                      
-                      ),SizedBox(height: 2,),
-                      ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.doc_append),
-                        title: Text("Source properties Management"),
-                        onTap: (){
-                          Get.toNamed("/sourceproperties");
-                        },
-                      
-                      ),
-                      SizedBox(height: 2,),
-                      /*ListTile(
-                        hoverColor: Colors.black12 ,
-                        leading: Icon(CupertinoIcons.square_favorites_alt),
-                        title: Text("tabbar"),
-                        onTap: (){
-                          Get.toNamed("/tabbar");
-                        },
-                      
-                      ),*/
-                      
-
-                      ],
-                      ),
-
-                    ],
-                  ) ,
-
-
-                  )),*/
-              Expanded(
+              //// l code li louta yji houni en cas de 5leeeet
+             Expanded(
                 flex: 4,
-                child: SafeArea(
-                  child: Column(
-                    children: [
-                      Header(),
-                      //SizedBox(height: defaultPadding,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(width: defaultPadding,),
-                          Expanded(
-                            flex: 5,
-                            child: Column(
-                              children: [
-                                //Myfiles(),
-                                //SizedBox(height: defaultPadding,),
-                                /*GridView.builder(////// im stopped here 
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: demoMyFields.length,
-                              
-                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 4,
-                                    crossAxisSpacing: defaultPadding,
-                                  ), 
-                                  itemBuilder: (context,index) => GridCardInfo(info: demoMyFields[index],),
-                                  ),*/
-                                
-
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Container(
-                                  height: 600,
-                                    child: view
-                                   ),
-                                ),
-                              ],
-                                ),),
-                                SizedBox(width: defaultPadding,),
-                                Expanded(
-                                flex: 2 ,
-                                child: StoragePart()),
-                           
-                        ],
-                      ),
-                    ],
-                  ),
-              ))
+                child: DashboardScreen(view: view))
             ],
           ),
 
@@ -406,6 +208,91 @@ class MasterPage extends StatelessWidget{
     
   }
   
+}
+
+class DashboardScreen extends StatelessWidget {
+  const DashboardScreen({
+    Key key,
+    @required this.view,
+  }) : super(key: key);
+
+  final Widget view;
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: SingleChildScrollView(
+        padding: EdgeInsets.all(defaultPadding),
+        child: Column(
+          children: [
+            Header(),
+            //SizedBox(height: defaultPadding,),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(width: defaultPadding,),
+                Expanded(
+                  flex: 5,
+                  child: Column(
+                    children: [
+                      //Myfiles(),
+                      //SizedBox(height: defaultPadding,),
+                      /*GridView.builder(////// im stopped here 
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: demoMyFields.length,
+                    
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 4,
+                          crossAxisSpacing: defaultPadding,
+                        ), 
+                        itemBuilder: (context,index) => GridCardInfo(info: demoMyFields[index],),
+                        ),*/
+                      
+
+                      ContainerAllScreenPart(view: view,),
+                      if (Responsive.isMobile(context))
+                      SizedBox(height: defaultPadding,),
+                      if (Responsive.isMobile(context))
+                      StoragePart(),
+                 
+                    ],
+                      ),),
+                      if (!Responsive.isMobile(context))
+                      SizedBox(width: defaultPadding,),
+                      if (!Responsive.isMobile(context))
+                      Expanded(
+                      flex: 2 ,
+                      child: StoragePart()),
+                 
+              ],
+            ),
+          ],
+        ),
+      ),
+              );
+  }
+}
+
+class ContainerAllScreenPart extends StatelessWidget {
+  const ContainerAllScreenPart({
+    Key key,
+    @required this.view,
+  }) : super(key: key);
+
+  final Widget view;
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      
+      child: Container(
+      height: 600,
+        child: view
+       ),
+    );
+  }
 }
 
 class GridCardInfo extends StatelessWidget {
@@ -625,11 +512,15 @@ class Header extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-        width: 25,),
+        if(!Responsive.isDesktop(context))
+        IconButton(icon: Icon(Icons.menu),
+        onPressed: context.read<MenuController>().controlMenu
+        ),
+        if(!Responsive.isMobile(context))
         Text("Dashbord",
         style: Theme.of(context).textTheme.headline6 ,),
-        Spacer(flex: 2,),
+        if(!Responsive.isMobile(context))
+        Spacer(flex: Responsive.isDesktop(context) ? 2 : 1,),
         Expanded(
           child: 
           SearchField()),
@@ -661,6 +552,7 @@ class ProfileCard extends StatelessWidget {
           Image.asset(
             "/images/itserv.jpg", 
             height: 38,),
+            if (!Responsive.isMobile(context))
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: defaultPadding / 2),
@@ -890,5 +782,173 @@ CloudStorageInfo(
 ];
 
 
+///// en cas de 5let haw l code 
+     /* Expanded(
+                child: Container(
+                  decoration: BoxDecoration(
+          color: Colors.blue,
+         borderRadius: BorderRadius.circular(20.0),
+        ),
+                  //color: Colors.blue,
+                  child: Column(
+                    
+                    children: [
+                      Container(
+                        width: double.maxFinite ,
+                        
+                        child: DrawerHeader(
+                          child: CircleAvatar(
+                            child: Icon(
+                              CupertinoIcons.profile_circled,
+                              size: 60,
+                            ),
+                          ),),
+                      ),
+                      ExpansionTile(
+                        title: Text("SQL Management"),
+                        //backgroundColor: Colors.amber.shade100,
+                        trailing: Icon(Icons.menu_open),
+                      
 
-                                        
+                        children: [
+                           ListTile(
+                          hoverColor: Colors.black12 ,
+                          leading: Icon(Icons.menu),
+                          title: Text("Data source"),
+                          
+                          
+                          onTap: (){
+                            Get.toNamed("/datasource");
+                          },
+                          
+                        ),
+                      
+                      SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("Data Destination"),
+                        onTap: (){
+                          Get.toNamed("/datadestination");
+                        },
+                      
+                      ),
+                      SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("Property Management"),
+                        onTap: (){
+                          Get.toNamed("/property");
+                        },
+                      
+                      ),SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("Source Property Management"),
+                        onTap: (){
+                          Get.toNamed("/sourceprop");
+                        },
+                      
+                      ),SizedBox(height: 2,),
+                      /*ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("Employee Management"),
+                        onTap: (){
+                          Get.toNamed("/employee");
+                        },
+                      
+                      ),SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("5ra"),
+                        onTap: (){
+                          Get.toNamed("/5raaaaaa");
+                        },
+                      
+                      ),
+                      SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("tabbar"),
+                        onTap: (){
+                          Get.toNamed("/tabbar");
+                        },
+                      
+                      ),*/
+                      
+
+                      ],
+                      ),
+                      ExpansionTile(
+                        title: Text("Elasticsearch Management"),
+                        //backgroundColor: Colors.amber.shade100,
+                        trailing: Icon(Icons.menu_book_outlined),
+                      
+
+                        children: [
+                           ListTile(
+                          hoverColor: Colors.black12 ,
+                          leading: Icon(CupertinoIcons.doc_append),
+                          title: Text("Data source "),
+                          
+                          
+                          onTap: (){
+                            Get.toNamed("/elasticdatasource");
+                          },
+                          
+                        ),
+                      
+                      SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.doc_append),
+                        title: Text("Data Destination Management"),
+                        onTap: (){
+                          Get.toNamed("/elasticdatadestination");
+                        },
+                      
+                      ),
+                      SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.doc_append),
+                        title: Text("Properties Management"),
+                        onTap: (){
+                          Get.toNamed("/propertyElastic");
+                        },
+                      
+                      ),SizedBox(height: 2,),
+                      ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.doc_append),
+                        title: Text("Source properties Management"),
+                        onTap: (){
+                          Get.toNamed("/sourceproperties");
+                        },
+                      
+                      ),
+                      SizedBox(height: 2,),
+                      /*ListTile(
+                        hoverColor: Colors.black12 ,
+                        leading: Icon(CupertinoIcons.square_favorites_alt),
+                        title: Text("tabbar"),
+                        onTap: (){
+                          Get.toNamed("/tabbar");
+                        },
+                      
+                      ),*/
+                      
+
+                      ],
+                      ),
+
+                    ],
+                  ) ,
+
+
+                  )),*/                                    
