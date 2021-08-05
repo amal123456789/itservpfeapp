@@ -22,10 +22,11 @@ class LogsModel{
   int iD_DEM;
 	String bPM_UID;
   String rEF_DEM_SRC;
+  String tags;
 
   LogsModel({this.id, this.d_LOG ,this.tYPE, this.sENS, this.wS, this.mETHODE , this.sYS_APPELANT , this.c_RETOUR, 
   this.oPERATION , this.tXT_LOG , this.rEQUEST , this.rESPONSE ,this.iD_DEM, this.bPM_UID,
-  this.rEF_DEM_SRC});
+  this.rEF_DEM_SRC , this.tags});
 
   factory LogsModel.fromJson(Map<String , dynamic> json) =>
   LogsModel(
@@ -43,7 +44,8 @@ class LogsModel{
     rESPONSE: json["rESPONSE"],
     iD_DEM: json["iD_DEM"],
     bPM_UID: json["bPM_UID"],
-    rEF_DEM_SRC: json["rEF_DEM_SRC"]
+    rEF_DEM_SRC: json["rEF_DEM_SRC"],
+    tags: json["tags"]
 );
 Map<String, dynamic> toJson() => {
   'id' : id,
@@ -61,6 +63,7 @@ Map<String, dynamic> toJson() => {
   /*"iD_DEM" : iD_DEM,
   "bPM_UID" : bPM_UID,*/
   "rEF_DEM_SRC" : rEF_DEM_SRC,
+  "tags" : tags,
 };
 
 String get dlog => d_LOG;
@@ -77,6 +80,7 @@ String get response => rESPONSE;
 int get id_dem => iD_DEM;
 String get bpm_uid => bPM_UID;
 String get ref_dem_src => rEF_DEM_SRC;
+String get tagss => tags;
 
 
 

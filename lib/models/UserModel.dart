@@ -5,7 +5,7 @@ UserModel userModelJson(String str) =>
 String userModelToJson(UserModel data) => 
 json.encode(data.toJson());
 enum Role {
-admin,user
+admin,user, moderteur,
 }
 class UserModel{
   int id;
